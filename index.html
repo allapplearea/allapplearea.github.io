@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEAM. APS @Allapplearea</title>
+  <link rel="icon" href="https://i.imgur.com/C8iBjE7.png" type="image/x-icon">
+  <link rel="shortcut icon" href="https://i.imgur.com/C8iBjE7.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    header, .profile-info, .post, .media-item, .follower-card, .member-card, .au-section {
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    .top-nav-bar {
+      position: fixed; top: 0; left: 0; width: 100%; height: 53px;
+      background-color: #fff; display: flex; align-items: center; gap: 20px;
+      padding: 0 16px; z-index: 9999; border-bottom: 1px solid #eee;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .top-logo { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+    .top-name h2 { font-size: 1.2rem; font-weight: 800; color: #0f1419; margin: 0; transition: color 0.3s ease; }
+    #toggleDarkMode {
+      width: 50px; height: 40px; font-size: 1.5rem; border: none; background: #1da1f2; color: #fff;
+      border-radius: 4px; cursor: pointer; transition: transform 0.1s ease-in-out;
+      display: flex; align-items: center; justify-content: center; margin-left: auto;
+    }
+    #toggleDarkMode:active { transform: scale(0.95); }
+    .profile-header {
+      position: relative; width: 100%; aspect-ratio: 3 / 1;
+      max-height: 400px; margin-top: 53px; overflow: hidden;
+    }
+    .header-track { display: flex; width: 100%; height: 100%; transition: transform 0.4s ease-in-out; }
+    .header-slide { flex: 0 0 100%; height: 100%; background-position: center; background-size: cover; background-repeat: no-repeat; }
+    .header-slider-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.4); color: white; border: none;
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10; font-size: 1.2rem; transition: background 0.2s, transform 0.1s;
+    }
+    .header-slider-btn:hover { background: rgba(0,0,0,0.6); }
+    .header-slider-btn:active { transform: translateY(-50%) scale(0.9); }
+    .header-slider-btn.prev { left: 15px; }
+    .header-slider-btn.next { right: 15px; }
+    .header-dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; }
+    .header-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: background 0.3s, transform 0.2s; }
+    .header-dot.active { background: #fff; transform: scale(1.2); }
+    .profile-info { background: #fff; border-bottom: 1px solid #ddd; z-index: 10; position: relative; }
+    .profile-top { display: block; max-width: 1200px; margin: 0 auto; padding: 0 2rem 2rem 2rem; position: relative; }
+    .profile-img {
+      width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff;
+      background-color: #fff; margin-top: -70px; position: relative; z-index: 10;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+    .profile-details { padding-top: 15px; }
+    .profile-details h2 { font-size: 1.6rem; margin-bottom: 4px; font-weight: 800; }
+    .username { color: #555; font-size: 0.95rem; }
+    .profile-meta { margin-top: 12px; margin-bottom: 4px; color: #333; font-size: 0.95rem; line-height: 1.6; }
+    .profile-meta a { color: #1da1f2; text-decoration: none; }
+    .follow-info { margin-top: 12px; margin-bottom: 2px; font-size: 0.9rem; }
+    .follow-info span { margin-right: 15px; }
+    .follow-info strong { color: #111; }
+    header {
+      background: #fff; border-bottom: 1px solid #ddd; padding: 0 2rem;
+      position: sticky; top: 53px; z-index: 1000; display: flex; flex-direction: column;
+    }
+    header nav { display: flex; width: 100%; max-width: 1200px; margin: 0 auto; align-items: center; padding: 0.8rem 0; gap: 0; }
+    header nav .nav-links { display: flex; flex: 1; align-items: center; width: 100%; }
+    header nav .nav-links a { flex: 1; color: #555; text-decoration: none; font-weight: 600; padding-bottom: 6px; cursor: pointer; text-align: center; min-width: 0; }
+    header nav .nav-links a.active { border-bottom: 3px solid #1da1f2; color: #1da1f2; }
+    header nav .nav-links a:hover { color: #1da1f2; }
+    .player-bar {
+      width: 100%; max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; gap: 8px; padding: 8px 0 6px;
+      border-bottom: 1px solid #eee; position: relative;
+    }
+    .player-btn { background: none; border: none; cursor: pointer; color: #555; font-size: 1rem; padding: 4px 6px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .player-btn:hover { color: #1da1f2; background: rgba(29,161,242,0.08); }
+    .player-track { flex: 1; min-width: 0; font-size: 0.78rem; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .player-track .track-title { font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .player-track .track-status { font-size: 0.72rem; color: #aaa; }
+    .volume-control { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .volume-icon { background: none; border: none; cursor: pointer; color: #555; font-size: 0.9rem; padding: 2px 4px; border-radius: 4px; flex-shrink: 0; }
+    .volume-icon:hover { color: #1da1f2; }
+    .volume-slider { -webkit-appearance: none; width: 70px; height: 4px; background: #ddd; border-radius: 2px; outline: none; cursor: pointer; }
+    .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #1da1f2; cursor: pointer; }
+    .playlist-btn { background: none; border: 1px solid #ddd; cursor: pointer; color: #555; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px; display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .playlist-btn:hover { color: #1da1f2; border-color: #1da1f2; }
+    .playlist-dropdown { display: none; position: absolute; top: calc(100% + 4px); right: 0; width: 300px; max-height: 320px; overflow-y: auto; background: #fff; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 2000; }
+    .playlist-dropdown.open { display: block; }
+    .playlist-dropdown-header { padding: 10px 14px; font-size: 0.8rem; font-weight: 600; color: #888; border-bottom: 1px solid #eee; }
+    .playlist-item { display: flex; align-items: center; gap: 10px; padding: 9px 14px; cursor: pointer; border-bottom: 1px solid #f2f2f2; }
+    .playlist-item:hover { background: rgba(29,161,242,0.06); }
+    .playlist-item.active { background: rgba(29,161,242,0.1); }
+    .playlist-item .pl-num { font-size: 0.75rem; color: #bbb; width: 18px; text-align: center; flex-shrink: 0; }
+    .playlist-item.active .pl-num { color: #1da1f2; }
+    .playlist-item .pl-title { flex: 1; font-size: 0.85rem; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .playlist-item.active .pl-title { color: #1da1f2; font-weight: 600; }
+    #ytPlayer { position: fixed; bottom: -200px; left: -200px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+    .container { padding: 1rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .tab-content { display: none !important; margin-top: 1rem; }
+    .tab-content.active { display: block !important; }
+    .tab-content h2.tab-title { font-size: 1.4rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .section-spacing { margin-top: 3.5rem; }
+    .post { background: white; padding: 15px 20px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #ddd; }
+    .post-header { display: flex; align-items: center; margin-bottom: 10px; }
+    .post-header img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
+    .post-header .name { font-weight: bold; }
+    .post-date { font-size: 0.85rem; color: #888; }
+    .post img { margin-top: 10px; max-width: 100%; border-radius: 10px; }
+    .post p { line-height: 1.6; }
+    .pinned-slider-wrapper { margin-bottom: 24px; border: 1px solid #ddd; border-radius: 15px; background: #fff; overflow: hidden; position: relative; }
+    .pinned-header-label { padding: 12px 20px 0; font-size: 0.85rem; color: #555; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .pinned-slider { position: relative; }
+    .pinned-track-container { overflow: hidden; width: 100%; }
+    .pinned-track { display: flex; transition: transform 0.4s ease-in-out; }
+    .pinned-post { flex: 0 0 100%; border: none; margin-bottom: 0; border-radius: 0; background: transparent; padding-left: 45px; padding-right: 45px; }
+    .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 1.6rem; color: #1da1f2; cursor: pointer; padding: 10px; z-index: 2; opacity: 0.6; outline: none; }
+    .slider-btn.prev { left: 5px; }
+    .slider-btn.next { right: 5px; }
+    .slider-btn:hover { opacity: 1; }
+    .slider-btn:active { transform: translateY(-50%) scale(0.9); }
+    .pinned-dots { display: flex; justify-content: center; gap: 6px; padding-bottom: 12px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; cursor: pointer; transition: background 0.3s, transform 0.2s; }
+    .dot.active { background: #1da1f2; transform: scale(1.2); }
+    .media-grid { column-count: 2; column-gap: 15px; }
+    .media-item { display: inline-block; width: 100%; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; background: white; overflow: hidden; position: relative; break-inside: avoid; }
+    .media-item img { width: 100%; height: auto; display: block; filter: grayscale(100%); transition: filter 0.3s ease; cursor: pointer; }
+    .media-item:hover img, .media-item:active img { filter: grayscale(0%); }
+    .media-caption { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.85rem; padding: 10px 14px; text-align: right; opacity: 0; transform: translateY(100%); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; z-index: 2; }
+    .media-item:hover .media-caption { opacity: 1; transform: translateY(0); }
+    .media-item.pdf-item { column-span: all; width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 10px; overflow: hidden; margin-top: 10px; }
+    .pdf-header { padding: 10px 15px; font-weight: bold; background: #f1f1f1; border-bottom: 1px solid #ddd; font-size: 0.9rem; }
+    .pdf-body { position: relative; width: 100%; padding-top: 130%; }
+    .pdf-body iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .member-container { display: flex; gap: 20px; flex-wrap: wrap; }
+    .member-card { flex: 1; min-width: 320px; background: white; border: 1px solid #ddd; border-radius: 15px; padding: 24px; display: flex; align-items: center; gap: 24px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .member-card[data-profile]:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(29,161,242,0.15); border-color: #1da1f2; }
+    .member-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid #eee; }
+    .member-info { display: flex; flex-direction: column; gap: 6px; }
+    .member-info .member-name { font-size: 1.25rem; font-weight: 600; color: #111; }
+    .member-info .member-bio { font-size: 0.9rem; color: #666; line-height: 1.4; }
+    .au-section { background: white; border: 1px solid #ddd; border-radius: 15px; padding: 30px; display: flex; align-items: center; gap: 40px; margin-bottom: 20px; }
+    .au-img-wrapper { flex: 5.5; min-width: 320px; aspect-ratio: 21/9; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
+    .au-img { width: 100%; height: 100%; object-fit: cover; }
+    .au-info { flex: 4.5; display: flex; flex-direction: column; gap: 6px; }
+    .au-info .au-title { font-size: 1.4rem; font-weight: 600; color: #111; }
+    .au-info .au-subtitle { font-size: 0.95rem; font-weight: 400; color: #777; line-height: 1.4; letter-spacing: -0.3px; }
+    .au-info .au-description { font-size: 0.9rem; color: #555; line-height: 1.6; margin-top: 6px; }
+    .replay-section { background: white; border: 1px solid #ddd; border-radius: 15px; display: flex; align-items: stretch; margin-bottom: 16px; overflow: hidden; cursor: pointer; text-decoration: none; color: inherit; transition: box-shadow 0.2s ease, transform 0.15s ease, border-color 0.2s ease; }
+    .replay-section:hover { box-shadow: 0 4px 20px rgba(29,161,242,0.13); border-color: #1da1f2; transform: translateY(-2px); }
+    .replay-img-wrapper { flex: 0 0 38%; max-width: 450px; min-width: 200px; aspect-ratio: 4/3; position: relative; overflow: hidden; }
+    .replay-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+    .replay-section:hover .replay-img { transform: scale(1.04); }
+    .replay-info { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 24px 28px; justify-content: center; }
+    .replay-info .replay-title { font-size: 1.2rem; font-weight: 600; color: #111; }
+    .replay-info .replay-subtitle { font-size: 0.9rem; color: #777; line-height: 1.4; letter-spacing: -0.3px; }
+    .replay-info .replay-description { font-size: 0.88rem; color: #555; line-height: 1.6; margin-top: 4px; }
+    .replay-info .replay-link-hint { margin-top: 8px; font-size: 0.78rem; color: #1da1f2; display: flex; align-items: center; gap: 4px; }
+
+    /* ── 다크모드 ── */
+    .dark-mode { background: #121212; color: #e0e0e0; }
+    .dark-mode .top-nav-bar { background-color: #1e1e1e; border-color: #444; }
+    .dark-mode .top-name h2 { color: #fff; }
+    .dark-mode header { background: #1e1e1e; border-color: #444; }
+    .dark-mode .player-bar { border-bottom-color: #333; }
+    .dark-mode .player-btn { color: #aaa; }
+    .dark-mode .player-btn:hover { color: #1da1f2; }
+    .dark-mode .player-track .track-title { color: #e0e0e0; }
+    .dark-mode .volume-icon { color: #aaa; }
+    .dark-mode .volume-slider { background: #444; }
+    .dark-mode .playlist-btn { color: #aaa; border-color: #444; }
+    .dark-mode .playlist-dropdown { background: #1e1e1e; border-color: #444; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    .dark-mode .playlist-dropdown-header { color: #666; border-bottom-color: #333; }
+    .dark-mode .playlist-item { border-bottom-color: #2a2a2a; }
+    .dark-mode .playlist-item:hover { background: rgba(29,161,242,0.08); }
+    .dark-mode .playlist-item.active { background: rgba(29,161,242,0.12); }
+    .dark-mode .playlist-item .pl-title { color: #ddd; }
+    .dark-mode .profile-info { background: #1e1e1e; border-color: #444; }
+    .dark-mode .profile-img { border-color: #1e1e1e; background-color: #1e1e1e; }
+    .dark-mode .profile-details h2, .dark-mode .username, .dark-mode .profile-meta { color: #fff; }
+    .dark-mode .follow-info strong { color: #fff; }
+    .dark-mode header nav a { color: #aaa; }
+    .dark-mode header nav a.active { color: #1da1f2; }
+    .dark-mode .pinned-slider-wrapper { background: #1e1e1e; border-color: #444; }
+    .dark-mode .pinned-header-label { color: #aaa; }
+    .dark-mode .dot { background: #444; }
+    .dark-mode .dot.active { background: #1da1f2; }
+    .dark-mode .post, .dark-mode .media-item, .dark-mode .member-card, .dark-mode .au-section { background: #1e1e1e; border-color: #444; }
+    .dark-mode .replay-section { background: #1e1e1e; border-color: #444; }
+    .dark-mode .replay-section:hover { border-color: #1da1f2; }
+    .dark-mode .replay-info .replay-title { color: #fff; }
+    .dark-mode .replay-info .replay-subtitle { color: #999; }
+    .dark-mode .replay-info .replay-description { color: #bbb; }
+    .dark-mode a { color: #1da1f2; }
+    .dark-mode .member-info .member-name { color: #fff; }
+    .dark-mode .member-info .member-bio { color: #bbb; }
+    .dark-mode .au-info .au-title { color: #fff; }
+    .dark-mode .au-info .au-subtitle { color: #999; }
+    .dark-mode .au-info .au-description { color: #bbb; }
+    .dark-mode .pdf-header { background: #2a2a2a; border-color: #444; color: #fff; }
+    .dark-mode #profileModalInner { background: #1e1e1e !important; color: #e0e0e0 !important; border: 1px solid #333; }
+
+    /* ── 모달 ── */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pfModalIn { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; padding: 20px; }
+    .modal-content { display: block; max-width: 90%; max-height: 90%; animation: fadeIn 0.3s; }
+    #profileModalInner {
+      background: #fff; border-radius: 20px; max-width: 560px; width: 100%; max-height: 88vh;
+      overflow-y: auto; overflow-x: hidden; position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: pfModalIn 0.22s ease;
+      scrollbar-gutter: stable; overscroll-behavior: contain;
+    }
+    #profileModalInner::-webkit-scrollbar { width: 5px; }
+    #profileModalInner::-webkit-scrollbar-track { background: transparent; }
+    #profileModalInner::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+
+    /* ── 관리자 패널 ── */
+    #adminBtn {
+      position: fixed; bottom: 20px; right: 20px; width: 44px; height: 44px;
+      border-radius: 50%; background: rgba(0,0,0,0.1); border: none; font-size: 1.4rem;
+      cursor: pointer; z-index: 99990; transition: opacity 0.3s, background 0.3s; opacity: 0.3;
+    }
+    #adminBtn:hover { opacity: 1; background: rgba(0,0,0,0.6); color: white; }
+    #adminPanel {
+      display: none; position: fixed; bottom: 75px; right: 20px; background: white;
+      padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 99999; width: 300px; border: 1px solid #ddd; max-height: 80vh; overflow-y: auto;
+    }
+    .admin-section { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #ddd; }
+    .admin-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .admin-section-title { font-weight: bold; font-size: 0.9rem; margin-bottom: 8px; color: #1da1f2; }
+    #adminPanel input, #adminPanel select, #adminPanel textarea {
+      width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;
+      font-size: 0.8rem; margin-bottom: 5px; font-family: inherit;
+    }
+    #adminPanel textarea { resize: vertical; min-height: 60px; }
+    #adminPanel button {
+      width: 100%; padding: 8px 0; border: none; background: #1da1f2; color: white;
+      border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: background 0.2s;
+    }
+    #adminPanel button:hover { background: #1a91da; }
+    #adminPanel button.btn-danger { background: #e0245e; }
+    #adminPanel button.btn-danger:hover { background: #c01e52; }
+    #adminPanel button.btn-gray { background: #888; }
+    #adminPanel button.btn-gray:hover { background: #666; }
+    #adminPanel .btn-row { display: flex; gap: 5px; }
+    #adminPanel .btn-row button { flex: 1; }
+    .save-status { font-size: 0.75rem; margin-top: 6px; text-align: center; min-height: 18px; }
+    .save-status.ok { color: #1da1f2; }
+    .save-status.err { color: #e0245e; }
+    .save-status.loading { color: #888; }
+    .dark-mode #adminPanel { background: #1e1e1e; border-color: #444; color: #fff; }
+    .dark-mode .admin-section { border-bottom-color: #444; }
+    .dark-mode #adminPanel input, .dark-mode #adminPanel select, .dark-mode #adminPanel textarea { background: #333; color: #fff; border-color: #555; }
+
+    /* ── 스티커 ── */
+    .sticker-wrapper { position: absolute; z-index: 9000; }
+    .sticker-img { width: 100%; height: auto; display: block; pointer-events: none; }
+    .sticker-delete { display: none; position: absolute; top: -12px; right: -12px; background: #e0245e; color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; cursor: pointer; font-size: 13px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; }
+    .sticker-resize { display: none; position: absolute; bottom: -8px; right: -8px; width: 22px; height: 22px; background: #1da1f2; border-radius: 50%; cursor: se-resize; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; border: 2px solid white; }
+    body.admin-mode .sticker-wrapper { border: 2px dashed rgba(29,161,242,0.7); cursor: move; }
+    body.admin-mode .sticker-delete, body.admin-mode .sticker-resize { display: block; }
+
+    /* ── 동적 게시물 삭제 버튼 ── */
+    .dyn-delete { display: none; position: absolute; top: 10px; right: 10px; background: #e0245e; color: white; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; cursor: pointer; font-size: 13px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 10; }
+    body.admin-mode .dyn-delete { display: block; }
+
+    /* ── 반응형 ── */
+    @media (max-width: 768px) {
+      .profile-top { padding: 0 1rem 1.5rem 1rem; }
+      .profile-img { width: 100px; height: 100px; margin-top: -50px; border-width: 3px; }
+      .container { padding: 1rem; }
+      header { padding: 0 1rem; }
+      .media-grid { column-count: 2; column-gap: 8px; }
+      .member-container { flex-direction: column; }
+      .au-section { flex-direction: column; align-items: flex-start; gap: 15px; padding: 20px; }
+      .au-img-wrapper { width: 100%; min-width: 100%; }
+      .replay-img-wrapper { flex: 0 0 38%; min-width: 120px; }
+      .replay-info { padding: 16px; }
+      .replay-info .replay-description { display: none; }
+      .playlist-dropdown { width: 260px; }
+      .player-track .track-status, .volume-control { display: none; }
+      .pinned-post { padding-left: 30px; padding-right: 30px; }
+      #adminPanel { width: 90%; right: 5%; bottom: 80px; }
+    }
+
+    /* ── 커스텀 커서 ── */
+    @media (hover: hover) and (pointer: fine) {
+      * { cursor: none !important; }
+      #custom-cursor { position: fixed; top: 0; left: 0; width: 35px; height: auto; pointer-events: none; z-index: 999999; transform: translate(-10%, -10%); display: block; }
+    }
+    @media (hover: none) { #custom-cursor { display: none !important; } }
+  </style>
+</head>
+<body>
+
+  <img id="custom-cursor" src="APS.gif" alt="cursor" style="display:none;">
+  <div id="ytPlayer"></div>
+
+  <!-- ── 관리자 버튼 & 패널 ── -->
+  <button onclick="enterAdminMode()" id="adminBtn" title="관리자 모드">⚙️</button>
+  <div id="adminPanel">
+    <div style="font-weight:bold; margin-bottom:10px; font-size:1.1rem;">🛠 관리자 모드</div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">✨ 스티커 꾸미기</div>
+      <input type="text" id="stickerUrl" placeholder="스티커 이미지 URL (png, gif)">
+      <button onclick="handleAddStickerClick()">스티커 화면에 추가</button>
+      <div style="font-size:0.7rem; color:#888; margin-top:5px; line-height:1.4;">드래그로 이동 · 우하단 점으로 크기조절 · X로 삭제</div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">🖼️ 미디어/작품 게시물 추가</div>
+      <div style="display:flex; gap:5px;">
+        <select id="addTab">
+          <option value="mediaGrid">미디어 탭</option>
+          <option value="worksGrid">참여 작품 탭</option>
+        </select>
+        <select id="addType">
+          <option value="image">이미지</option>
+          <option value="pdf">PDF</option>
+        </select>
+      </div>
+      <input type="text" id="addUrl" placeholder="이미지 또는 구글 드라이브 URL">
+      <input type="text" id="addCaption" placeholder="캡션 (선택사항)">
+      <button onclick="addGridItem()">게시물 추가</button>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">💾 GitHub에 저장</div>
+      <div style="font-size:0.75rem; color:#888; margin-bottom:8px; line-height:1.5;">저장하면 index.html이 GitHub에 커밋되고 모든 방문자에게 반영됩니다.</div>
+      <button onclick="saveToGitHub()">🚀 저장 및 배포</button>
+      <div class="save-status" id="saveStatus"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-gray" onclick="exitAdminMode()" style="flex:1;">종료</button>
+    </div>
+  </div>
+
+  <!-- ── 상단 바 ── -->
+  <div class="top-nav-bar">
+    <img class="top-logo" src="https://i.imgur.com/C8iBjE7.png" alt="로고">
+    <div class="top-name"><h2>TEAM. APS</h2></div>
+    <button id="toggleDarkMode" onclick="toggleDarkMode()" title="다크 모드 전환">☽</button>
+  </div>
+
+  <!-- ── 헤더 슬라이더 ── -->
+  <div class="profile-header">
+    <button class="header-slider-btn prev" onclick="moveHeader(-1)">&#10094;</button>
+    <div class="header-track" id="headerTrack">
+      <div class="header-slide" style="background-image: url('https://i.imgur.com/1QHyVOl.png');"></div>
+      <div class="header-slide" style="background-image: url('https://i.imgur.com/AeghVtx.png');"></div>
+      <div class="header-slide" style="background-image: url('https://i.imgur.com/um1bupC.png');"></div>
+    </div>
+    <button class="header-slider-btn next" onclick="moveHeader(1)">&#10095;</button>
+    <div class="header-dots" id="headerDots"></div>
+  </div>
+
+  <!-- ── 프로필 ── -->
+  <div class="profile-info">
+    <div class="profile-top">
+      <img class="profile-img" src="https://i.imgur.com/GKSCfUM.jpeg" alt="프로필">
+      <div class="profile-details">
+        <h2>TEAM. APS</h2>
+        <div class="username">@AllAppleArea</div>
+        <div class="profile-meta">˙Ⱉ˙  애 ˆ∪ˆ 파 ⇀‸↼‶ 레</div>
+        <div class="follow-info">
+          <span><strong>3</strong> 팔로잉</span>
+          <span><strong>333,333</strong> 팔로워</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 헤더/내비 ── -->
+  <header>
+    <div class="player-bar">
+      <button class="player-btn" id="btnPrev" onclick="playerPrev()" title="이전 곡">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="2.5" height="12" rx="1"/><path d="M13.5 2.5 L5 8 L13.5 13.5 Z"/></svg>
+      </button>
+      <button class="player-btn" id="btnPlay" onclick="playerToggle()" title="재생/정지">
+        <svg id="iconPlay" width="17" height="17" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5 L13 8 L3 13.5 Z"/></svg>
+        <svg id="iconPause" width="17" height="17" viewBox="0 0 16 16" fill="currentColor" style="display:none"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg>
+      </button>
+      <button class="player-btn" id="btnNext" onclick="playerNext()" title="다음 곡">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="12.5" y="2" width="2.5" height="12" rx="1"/><path d="M2.5 2.5 L11 8 L2.5 13.5 Z"/></svg>
+      </button>
+      <button class="player-btn" id="btnRepeat" onclick="cycleRepeat()" title="순서 재생">
+        <svg id="iconRepeatNone" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="1" y1="8" x2="12" y2="8"/><polyline points="9 5 12 8 9 11"/><line x1="14" y1="5" x2="14" y2="11" stroke-width="2"/>
+        </svg>
+        <svg id="iconRepeatAll" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <path d="M2 5h10a2 2 0 0 1 2 2v1"/><path d="M14 11H4a2 2 0 0 1-2-2V8"/>
+          <polyline points="11 2 14 5 11 8"/><polyline points="5 14 2 11 5 8"/>
+        </svg>
+        <svg id="iconRepeatOne" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <path d="M2 5h10a2 2 0 0 1 2 2v1"/><path d="M14 11H4a2 2 0 0 1-2-2V8"/>
+          <polyline points="11 2 14 5 11 8"/><polyline points="5 14 2 11 5 8"/>
+          <circle cx="12.5" cy="12.5" r="3.2" fill="currentColor" stroke="none"/>
+          <text x="12.5" y="13.4" text-anchor="middle" font-size="4.2" font-weight="700" font-family="Inter,sans-serif" fill="white" stroke="none">1</text>
+        </svg>
+      </button>
+      <div class="player-track">
+        <div class="track-title" id="trackTitle">재생 대기 중</div>
+        <div class="track-status" id="trackStatus">플레이리스트에서 선택하세요</div>
+      </div>
+      <div class="volume-control">
+        <button class="volume-icon" id="btnMute" onclick="toggleMute()">
+          <svg id="iconVolHigh" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="2,5 6,5 10,2 10,14 6,11 2,11" fill="currentColor" stroke="none"/>
+            <path d="M12 4.5a5 5 0 0 1 0 7"/><path d="M13.5 2.5a8 8 0 0 1 0 11"/>
+          </svg>
+          <svg id="iconVolMid" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <polygon points="2,5 6,5 10,2 10,14 6,11 2,11" fill="currentColor" stroke="none"/>
+            <path d="M12 4.5a5 5 0 0 1 0 7"/>
+          </svg>
+          <svg id="iconVolLow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <polygon points="2,5 6,5 10,2 10,14 6,11 2,11" fill="currentColor" stroke="none"/>
+          </svg>
+          <svg id="iconVolMute" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <polygon points="2,5 6,5 10,2 10,14 6,11 2,11" fill="currentColor" stroke="none"/>
+            <line x1="12" y1="5" x2="15.5" y2="11"/><line x1="15.5" y1="5" x2="12" y2="11"/>
+          </svg>
+        </button>
+        <input class="volume-slider" id="volumeSlider" type="range" min="0" max="100" value="80" oninput="setVolume(this.value)">
+      </div>
+      <button class="playlist-btn" id="playlistToggleBtn" onclick="togglePlaylist()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><ellipse cx="5" cy="13" rx="3" ry="2"/><ellipse cx="13" cy="11" rx="3" ry="2"/><path d="M8 13 L8 3 L16 1 L16 11" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <span>목록</span>
+      </button>
+      <div class="playlist-dropdown" id="playlistDropdown">
+        <div class="playlist-dropdown-header">PLAYLIST</div>
+      </div>
+    </div>
+    <nav>
+      <div class="nav-links">
+        <a href="#" class="active" onclick="showTab(event,'home')">홈</a>
+        <a href="#" onclick="showTab(event,'aps')">APS</a>
+        <a href="#" onclick="showTab(event,'media')">미디어</a>
+        <a href="#" onclick="showTab(event,'works')">참여 작품</a>
+        <a href="#" onclick="showTab(event,'replay')">다시보기</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── 본문 ── -->
+  <div class="container">
+
+    <!-- 홈 탭 -->
+    <section class="tab-content active" id="home">
+      <div class="pinned-slider-wrapper">
+        <div class="pinned-header-label">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 4.5C7 3.12 8.12 2 9.5 2h5C15.88 2 17 3.12 17 4.5v5.26L20.12 16H13v5l-1 2-1-2v-5H3.88L7 9.76V4.5z"/></svg>
+          고정된 트윗
+        </div>
+        <div class="pinned-slider">
+          <button class="slider-btn prev" onclick="movePinned(-1)">&#10094;</button>
+          <div class="pinned-track-container">
+            <div class="pinned-track" id="pinnedTrack">
+              <div class="post pinned-post">
+                <div class="post-header"><img src="https://i.imgur.com/GKSCfUM.jpeg" alt="프로필"><div><div class="name">TEAM. APS</div><div class="post-date">@AllAppleArea</div></div></div>
+                <p>여기는 첫 번째 고정 게시물이야! 📌<br>제일 먼저 보여주고 싶은 공지나 환영 인사를 적어두면 좋아.</p>
+              </div>
+              <div class="post pinned-post">
+                <div class="post-header"><img src="https://i.imgur.com/GKSCfUM.jpeg" alt="프로필"><div><div class="name">TEAM. APS</div><div class="post-date">@AllAppleArea</div></div></div>
+                <p>두 번째 고정 게시물 짠✨<br>옆으로 스르륵 넘기면 볼 수 있게 설정해 뒀어.</p>
+              </div>
+              <div class="post pinned-post">
+                <div class="post-header"><img src="https://i.imgur.com/GKSCfUM.jpeg" alt="프로필"><div><div class="name">TEAM. APS</div><div class="post-date">@AllAppleArea</div></div></div>
+                <p>마지막 세 번째 고정 게시물!<br>원하는 만큼 코드를 복사해서 쭈욱 추가할 수 있어.</p>
+              </div>
+            </div>
+          </div>
+          <button class="slider-btn next" onclick="movePinned(1)">&#10095;</button>
+        </div>
+        <div class="pinned-dots" id="pinnedDots"></div>
+      </div>
+      <div class="post">
+        <div class="post-header"><img src="https://i.imgur.com/GKSCfUM.jpeg" alt="프로필"><div><div class="name">TEAM. APS</div><div class="post-date">@AllAppleArea</div></div></div>
+        <p>이곳은 애파레 트위터<br>뭐적을까</p>
+      </div>
+      <div class="post">
+        <div class="post-header"><img src="https://i.imgur.com/GKSCfUM.jpeg" alt="프로필"><div><div class="name">TEAM. APS</div><div class="post-date">@AllAppleArea</div></div></div>
+        <p>애파레 좋아<br>애파레만 있으면 매일매일 즐겁죠</p>
+      </div>
+    </section>
+
+    <!-- 미디어 탭 -->
+    <section class="tab-content" id="media">
+      <div class="media-grid" id="mediaGrid">
+        <!-- ── DYNAMIC_MEDIA_START ── -->
+        <div class="media-item"><img src="https://i.imgur.com/avjRuen.jpeg" alt="ⓒ밥먹자"><div class="media-caption">ⓒ밥먹자</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/q7aCRK8.png" alt="ⓒ틴챠"><div class="media-caption">ⓒ틴챠</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/ISOkOkB.png" alt="ⓒ공룡"><div class="media-caption">ⓒ공룡</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/AeghVtx.png" alt="ⓒ공룡"><div class="media-caption">ⓒ공룡</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/CGTIWvT.png" alt="ⓒre레rㅔ"><div class="media-caption">ⓒre레rㅔ</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/GKSCfUM.jpeg" alt="ⓒ감자농부"><div class="media-caption">ⓒ감자농부</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/7GVrCQ1.png" alt="ⓒ이동희"><div class="media-caption">ⓒ이동희</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/fUWBZk0.png" alt="ⓒ스프"><div class="media-caption">ⓒ스프</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/B9ScxNN.png" alt="ⓒ사과"><div class="media-caption">ⓒ사과</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/olqhfTt.jpeg" alt="ⓒ얍"><div class="media-caption">ⓒ얍</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/09GvVpE.png" alt="ⓒ고능걸"><div class="media-caption">ⓒ고능걸</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/U7YXrcF.png" alt="ⓒ도감"><div class="media-caption">ⓒ도감</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/mX940hO.png" alt="ⓒ@hi_roun"><div class="media-caption">ⓒ@hi_roun</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/Z003iu8.png" alt="ⓒ프항"><div class="media-caption">ⓒ프항</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/bMEQWvq.png" alt="ⓒ공룡"><div class="media-caption">ⓒ공룡</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/ojntpMm.png" alt="ⓒ식혜"><div class="media-caption">ⓒ식혜</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/tf600f3.png" alt="ⓒhayochi"><div class="media-caption">ⓒhayochi</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/1QHyVOl.png" alt="ⓒ공룡"><div class="media-caption">ⓒ공룡</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/um1bupC.png" alt="ⓒ공룡"><div class="media-caption">ⓒ공룡</div></div>
+        <!-- ── DYNAMIC_MEDIA_END ── -->
+      </div>
+    </section>
+
+    <!-- 참여 작품 탭 -->
+    <section class="tab-content" id="works">
+      <div class="media-grid" id="worksGrid">
+        <!-- ── DYNAMIC_WORKS_START ── -->
+        <div class="media-item"><img src="https://i.imgur.com/NTFv278.jpeg" alt="ⓅWizarding World : Today - 1분기"><div class="media-caption">ⓅWizarding World : Today - 1분기</div></div>
+        <div class="media-item"><img src="https://i.imgur.com/5WcaDwQ.jpeg" alt="ⓅWizarding World : Today - 1분기"><div class="media-caption">ⓅWizarding World : Today - 1분기</div></div>
+        <div class="media-item pdf-item">
+          <div class="pdf-header">📄 Wizarding World : Today - 1분기</div>
+          <div class="pdf-body"><iframe src="https://drive.google.com/file/d/11qjMyVWA4pRu__wUvyZ7vdfH9OegDsWr/preview" allow="autoplay"></iframe></div>
+        </div>
+        <!-- ── DYNAMIC_WORKS_END ── -->
+      </div>
+    </section>
+
+    <!-- 다시보기 탭 -->
+    <section class="tab-content" id="replay">
+      <a class="replay-section" href="https://allapplearea.neocities.org/replay" target="_blank" rel="noopener">
+        <div class="replay-img-wrapper"><img class="replay-img" src="https://i.imgur.com/q2mDWEs.jpeg" alt="다시보기 썸네일"></div>
+        <div class="replay-info">
+          <div class="replay-title">버뮤다 삼각지대에서 거대 참치를 낚는 이야기</div>
+          <div class="replay-subtitle">◆HO1 에이프릴, HO2 폴라, HO3 시에라 ◆2026. 06. 07 ~</div>
+          <div class="replay-description">과연, 무사히 마의 해역에서 귀환할 수 있을 것인가―</div>
+          <div class="replay-link-hint">▶ 다시보기 열기</div>
+        </div>
+      </a>
+      <a class="replay-section" href="https://여기에-roll20-링크.com" target="_blank" rel="noopener">
+        <div class="replay-img-wrapper"><img class="replay-img" src="https://i.imgur.com/AeghVtx.png" alt="다시보기 썸네일"></div>
+        <div class="replay-info">
+          <div class="replay-title">세션 제목 2</div>
+          <div class="replay-subtitle">부제목 · 날짜 등</div>
+          <div class="replay-description">세션에 대한 간단한 설명을 여기에 적어주세요.</div>
+          <div class="replay-link-hint">▶ 다시보기 열기</div>
+        </div>
+      </a>
+    </section>
+
+    <!-- APS 탭 -->
+    <section class="tab-content" id="aps">
+      <h2 class="tab-title">APS</h2>
+      <div class="member-container">
+        <div class="member-card" data-profile="profiles/code-a.html">
+          <img class="member-img" src="https://i.imgur.com/gkms2CR.png" alt="애커 이미지">
+          <div class="member-info"><div class="member-name">CODE : A</div><div class="member-bio">우리가 아는 익숙한 푸딩공룡.</div></div>
+        </div>
+        <div class="member-card" data-profile="profiles/code-p.html">
+          <img class="member-img" src="https://i.imgur.com/ydIG1wR.png" alt="파멸 이미지">
+          <div class="member-info"><div class="member-name">CODE : P</div><div class="member-bio">우리가 아는 익숙한 파란사과.</div></div>
+        </div>
+        <div class="member-card" data-profile="profiles/code-s.html">
+          <img class="member-img" src="https://i.imgur.com/31s4UWX.png" alt="시레 이미지">
+          <div class="member-info"><div class="member-name">CODE : S</div><div class="member-bio">우리가 아는 익숙한 마시멜로.</div></div>
+        </div>
+      </div>
+
+      <h2 class="tab-title section-spacing">AU</h2>
+      <div class="au-section">
+        <div class="au-img-wrapper"><img class="au-img" src="https://i.imgur.com/um1bupC.png" alt="AU 메인 이미지"></div>
+        <div class="au-info">
+          <div class="au-title">우마무스메 AU</div>
+          <div class="au-subtitle">캐스팅: 에이션트 푸딩, 파이션 애플, 사이렌 멜로우</div>
+          <div class="au-description">우마뾰이 우마뾰이<br>우마뾰이 우마뾰이</div>
+        </div>
+      </div>
+      <div class="au-section">
+        <div class="au-img-wrapper"><img class="au-img" src="https://i.imgur.com/09GvVpE.png" alt="AU 메인 이미지"></div>
+        <div class="au-info">
+          <div class="au-title">해리포터 AU</div>
+          <div class="au-subtitle">캐스팅: 폴라 D. 애셔, 에이프릴 파이션, 시에라 멜로우</div>
+          <div class="au-description">미래의 트리위저드 챔피언이 될지도 모르는 후보 세 사람.<br>그렇지만… 아무리 그래도, 얘네가 챔피언 후보라고?</div>
+        </div>
+      </div>
+      <div class="au-section">
+        <div class="au-img-wrapper"><img class="au-img" src="https://i.imgur.com/AeghVtx.png" alt="AU 메인 이미지"></div>
+        <div class="au-info">
+          <div class="au-title">버뮤다 삼각지대에서 거대 참치를 낚는 이야기</div>
+          <div class="au-subtitle">캐스팅: HO1 에이프릴, HO2 폴라, HO3 시에라</div>
+          <div class="au-description">세 사람은 현지로 향하는 조사대에 지원하여 선발되었습니다.<br>우리는 각자의 목적을 안고 버뮤다 삼각지대로 출항합니다.<br>과연, 마의 해역에서 무사히 귀환할 수 있을까.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── 갤러리 모달 ── -->
+  <div id="galleryModal" class="modal">
+    <div style="position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+      <button id="prevBtn" style="position:absolute; left:20px; background:rgba(255,255,255,0.2); border:none; color:white; font-size:2rem; cursor:pointer; padding:10px; z-index:10001;">◀</button>
+      <img class="modal-content" id="modalImage" alt="원본 이미지" style="position:relative; z-index:10000;">
+      <button id="nextBtn" style="position:absolute; right:20px; background:rgba(255,255,255,0.2); border:none; color:white; font-size:2rem; cursor:pointer; padding:10px; z-index:10001;">▶</button>
+    </div>
+  </div>
+
+  <!-- ── 프로필 모달 ── -->
+  <div id="profileModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.72); z-index:20000; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(4px);">
+    <div id="profileModalInner">
+      <button onclick="closeProfileModal()" style="position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.28); border:none; border-radius:50%; width:32px; height:32px; font-size:0.95rem; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#fff; z-index:100;" onmouseover="this.style.background='rgba(0,0,0,0.50)'" onmouseout="this.style.background='rgba(0,0,0,0.28)'">✕</button>
+      <div id="profileModalContent"></div>
+    </div>
+  </div>
+
+  <script>
+  // =====================================================
+  // ⚙️ GitHub 설정 — 레포 확정 후 아래 두 줄만 교체하세요
+  // =====================================================
+  const GITHUB_TOKEN = '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';   // ← 여기에 새로 발급한 토큰 붙여넣기
+  const GITHUB_REPO  = 'allapplearea/aps-site';
+  const GITHUB_FILE  = 'index.html';
+  const GITHUB_BRANCH = 'main';
+
+  // =====================================================
+  // 플레이리스트
+  // =====================================================
+  const PLAYLIST = [
+    { title: 'Mela!',           url: 'https://youtu.be/My4Z611KjIY?si=PmeL1zDB-XCuvZTV' },
+    { title: '學園天國',         url: 'https://www.youtube.com/watch?v=VKAN-pG8cN4' },
+    { title: 'LEMON MELON COOKIE', url: 'https://youtu.be/5l8VZEyNRH8?si=cPEWArpi0SMFgLrN' },
+  ];
+
+  let ytPlayer = null, ytReady = false;
+  let currentIdx = -1, isPlaying = false, pendingPlay = -1;
+  let repeatMode = 0, isMuted = false, lastVolume = 80;
+
+  function getVideoId(url) {
+    const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : url.trim();
+  }
+
+  const ytScript = document.createElement('script');
+  ytScript.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(ytScript);
+
+  window.onYouTubeIframeAPIReady = function() {
+    ytPlayer = new YT.Player('ytPlayer', {
+      height: '1', width: '1',
+      playerVars: { autoplay: 0, controls: 0 },
+      events: {
+        onReady: () => {
+          ytReady = true;
+          ytPlayer.setVolume(lastVolume);
+          if (pendingPlay >= 0) { playSong(pendingPlay); pendingPlay = -1; }
+        },
+        onStateChange: (e) => {
+          if (e.data === YT.PlayerState.PLAYING) { isPlaying = true; updatePlayBtn(); document.getElementById('trackStatus').textContent = '재생 중'; }
+          else if (e.data === YT.PlayerState.PAUSED) { isPlaying = false; updatePlayBtn(); document.getElementById('trackStatus').textContent = '일시정지'; }
+          else if (e.data === YT.PlayerState.ENDED) {
+            if (repeatMode === 1) { ytPlayer.seekTo(0); ytPlayer.playVideo(); }
+            else if (repeatMode === 2) { playerNext(); }
+            else { if (currentIdx < PLAYLIST.length - 1) playerNext(); else { isPlaying = false; updatePlayBtn(); } }
+          }
+        }
+      }
+    });
+  };
+
+  function playSong(idx) {
+    if (idx < 0 || idx >= PLAYLIST.length) return;
+    currentIdx = idx;
+    document.getElementById('trackTitle').textContent = PLAYLIST[idx].title;
+    document.getElementById('trackStatus').textContent = '로딩 중…';
+    renderPlaylist();
+    if (!ytReady) { pendingPlay = idx; return; }
+    ytPlayer.loadVideoById(getVideoId(PLAYLIST[idx].url));
+    isPlaying = true; updatePlayBtn();
+  }
+  function playerToggle() { if (currentIdx < 0) { playSong(0); return; } if (!ytReady) return; if (isPlaying) ytPlayer.pauseVideo(); else ytPlayer.playVideo(); }
+  function playerPrev() { playSong(currentIdx <= 0 ? PLAYLIST.length - 1 : currentIdx - 1); }
+  function playerNext() { playSong((currentIdx + 1) % PLAYLIST.length); }
+  function updatePlayBtn() { document.getElementById('iconPlay').style.display = isPlaying ? 'none' : ''; document.getElementById('iconPause').style.display = isPlaying ? '' : 'none'; }
+  function cycleRepeat() {
+    repeatMode = (repeatMode + 1) % 3;
+    document.getElementById('iconRepeatNone').style.display = repeatMode === 0 ? '' : 'none';
+    document.getElementById('iconRepeatAll').style.display  = repeatMode === 2 ? '' : 'none';
+    document.getElementById('iconRepeatOne').style.display  = repeatMode === 1 ? '' : 'none';
+  }
+  function setVolume(val) { lastVolume = parseInt(val); isMuted = false; if (ytReady) ytPlayer.setVolume(lastVolume); updateVolumeIcon(); }
+  function toggleMute() { isMuted = !isMuted; if (ytReady) ytPlayer.setVolume(isMuted ? 0 : lastVolume); updateVolumeIcon(); }
+  function updateVolumeIcon() {
+    const v = isMuted ? 0 : lastVolume;
+    document.getElementById('iconVolHigh').style.display = (!isMuted && v >= 70) ? '' : 'none';
+    document.getElementById('iconVolMid').style.display  = (!isMuted && v >= 40 && v < 70) ? '' : 'none';
+    document.getElementById('iconVolLow').style.display  = (!isMuted && v > 0 && v < 40) ? '' : 'none';
+    document.getElementById('iconVolMute').style.display = (isMuted || v === 0) ? '' : 'none';
+  }
+  function renderPlaylist() {
+    const dd = document.getElementById('playlistDropdown');
+    dd.innerHTML = '<div class="playlist-dropdown-header">PLAYLIST</div>';
+    PLAYLIST.forEach((s, i) => {
+      const el = document.createElement('div');
+      el.className = 'playlist-item' + (i === currentIdx ? ' active' : '');
+      el.innerHTML = `<span class="pl-num">${i === currentIdx ? '♪' : i + 1}</span><span class="pl-title">${s.title}</span>`;
+      el.onclick = () => playSong(i);
+      dd.appendChild(el);
+    });
+  }
+  function togglePlaylist() {
+    const dd = document.getElementById('playlistDropdown');
+    const open = dd.classList.toggle('open');
+    document.getElementById('playlistToggleBtn').classList.toggle('open', open);
+    if (open) renderPlaylist();
+  }
+  document.addEventListener('click', e => {
+    const dd = document.getElementById('playlistDropdown');
+    const btn = document.getElementById('playlistToggleBtn');
+    if (!dd.contains(e.target) && !btn.contains(e.target)) { dd.classList.remove('open'); btn.classList.remove('open'); }
+  });
+  renderPlaylist();
+
+  // =====================================================
+  // 탭 / 다크모드 / 슬라이더
+  // =====================================================
+  function showTab(event, tabId) {
+    event.preventDefault();
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.getElementById(tabId)?.classList.add('active');
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  }
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    document.getElementById('toggleDarkMode').textContent = document.body.classList.contains('dark-mode') ? '☀︎' : '☽';
+    const pfRoot = document.querySelector('#profileModalContent .pf-root');
+    if (pfRoot) pfRoot.classList.toggle('pf-dark', document.body.classList.contains('dark-mode'));
+  }
+
+  let currentHeaderIdx = 0, headerCount = 0;
+  function initHeaderSlider() {
+    const track = document.getElementById('headerTrack');
+    if (!track) return;
+    headerCount = track.querySelectorAll('.header-slide').length;
+    const dotsEl = document.getElementById('headerDots');
+    dotsEl.innerHTML = '';
+    for (let i = 0; i < headerCount; i++) {
+      const d = document.createElement('div');
+      d.className = 'header-dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => { currentHeaderIdx = i; updateHeaderView(); };
+      dotsEl.appendChild(d);
+    }
+  }
+  function moveHeader(dir) { currentHeaderIdx = (currentHeaderIdx + dir + headerCount) % headerCount; updateHeaderView(); }
+  function updateHeaderView() {
+    document.getElementById('headerTrack').style.transform = `translateX(-${currentHeaderIdx * 100}%)`;
+    document.querySelectorAll('#headerDots .header-dot').forEach((d, i) => d.classList.toggle('active', i === currentHeaderIdx));
+  }
+
+  let currentPinnedIdx = 0, pinnedCount = 0;
+  function initPinnedSlider() {
+    const track = document.getElementById('pinnedTrack');
+    if (!track) return;
+    pinnedCount = track.querySelectorAll('.pinned-post').length;
+    const dotsEl = document.getElementById('pinnedDots');
+    dotsEl.innerHTML = '';
+    for (let i = 0; i < pinnedCount; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => { currentPinnedIdx = i; updatePinnedView(); };
+      dotsEl.appendChild(d);
+    }
+  }
+  function movePinned(dir) { currentPinnedIdx = (currentPinnedIdx + dir + pinnedCount) % pinnedCount; updatePinnedView(); }
+  function updatePinnedView() {
+    document.getElementById('pinnedTrack').style.transform = `translateX(-${currentPinnedIdx * 100}%)`;
+    document.querySelectorAll('#pinnedDots .dot').forEach((d, i) => d.classList.toggle('active', i === currentPinnedIdx));
+  }
+
+  // =====================================================
+  // 갤러리 모달
+  // =====================================================
+  const galleryModal = document.getElementById('galleryModal');
+  const modalImg     = document.getElementById('modalImage');
+  let imgArr = [], imgIdx = 0;
+  function updateModalImg(idx) {
+    imgIdx = (idx + imgArr.length) % imgArr.length;
+    modalImg.src = imgArr[imgIdx];
+    document.getElementById('prevBtn').style.display = imgArr.length > 1 ? 'block' : 'none';
+    document.getElementById('nextBtn').style.display = imgArr.length > 1 ? 'block' : 'none';
+  }
+  document.addEventListener('click', e => {
+    const img = e.target.closest('.media-item:not(.pdf-item) img');
+    if (img && !document.body.classList.contains('admin-mode')) {
+      imgArr = img.dataset.images ? img.dataset.images.split(',') : [img.src];
+      imgIdx = Math.max(0, imgArr.indexOf(img.src));
+      updateModalImg(imgIdx);
+      galleryModal.style.display = 'flex';
+    }
+  });
+  document.getElementById('prevBtn').onclick = e => { e.stopPropagation(); updateModalImg(imgIdx - 1); };
+  document.getElementById('nextBtn').onclick = e => { e.stopPropagation(); updateModalImg(imgIdx + 1); };
+  galleryModal.addEventListener('click', e => { if (e.target === galleryModal || e.target.closest('.modal-content-wrapper') === galleryModal) galleryModal.style.display = 'none'; });
+
+  // =====================================================
+  // 프로필 모달
+  // =====================================================
+  document.querySelectorAll('.member-card[data-profile]').forEach(card => {
+    card.addEventListener('click', () => openProfileModal(card.dataset.profile));
+  });
+  function openProfileModal(url) {
+    const modal = document.getElementById('profileModal');
+    const inner = document.getElementById('profileModalInner');
+    const content = document.getElementById('profileModalContent');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    inner.scrollTop = 0;
+    content.innerHTML = '<div style="padding:60px; text-align:center; color:#aaa; font-size:0.9rem;">불러오는 중…</div>';
+    fetch(url)
+      .then(r => { if (!r.ok) throw new Error(); return r.text(); })
+      .then(html => {
+        content.innerHTML = html;
+        if (document.body.classList.contains('dark-mode')) content.querySelector('.pf-root')?.classList.add('pf-dark');
+      })
+      .catch(() => { content.innerHTML = '<div style="padding:60px; text-align:center; color:#e55; font-size:0.9rem;">⚠️ 프로필을 불러오지 못했습니다.</div>'; });
+  }
+  function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; document.body.style.overflow = ''; }
+  document.getElementById('profileModal').addEventListener('click', e => { if (e.target.id === 'profileModal') closeProfileModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeProfileModal(); galleryModal.style.display = 'none'; } });
+
+  // =====================================================
+  // 커스텀 커서
+  // =====================================================
+  (function() {
+    const cursor = document.getElementById('custom-cursor');
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      cursor.style.display = 'block';
+      document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+      document.addEventListener('mouseleave', () => { cursor.style.display = 'none'; });
+      document.addEventListener('mouseenter', () => { cursor.style.display = 'block'; });
+    }
+  })();
+
+  // =====================================================
+  // 관리자 모드
+  // =====================================================
+  let isAdmin = false;
+
+  function enterAdminMode() {
+    const pwd = prompt('관리자 비밀번호를 입력하세요:');
+    if (pwd === '1234') {
+      isAdmin = true;
+      document.body.classList.add('admin-mode');
+      document.getElementById('adminPanel').style.display = 'block';
+      alert('🛠 관리자 모드 활성화!');
+    } else if (pwd !== null) {
+      alert('비밀번호가 틀렸습니다.');
+    }
+  }
+  function exitAdminMode() {
+    isAdmin = false;
+    document.body.classList.remove('admin-mode');
+    document.getElementById('adminPanel').style.display = 'none';
+  }
+
+  // ── 스티커 ──
+  function handleAddStickerClick() {
+    const url = document.getElementById('stickerUrl').value.trim();
+    if (!url) { alert('스티커 이미지 URL을 입력하세요!'); return; }
+    createSticker(url, '40vw', (window.scrollY + 150) + 'px', '15vw');
+    document.getElementById('stickerUrl').value = '';
+  }
+  function createSticker(url, left, top, width) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'sticker-wrapper';
+    wrapper.style.cssText = `left:${left}; top:${top}; width:${width};`;
+    wrapper.dataset.url = url;
+    const img = document.createElement('img');
+    img.src = url; img.className = 'sticker-img';
+    const del = document.createElement('div');
+    del.className = 'sticker-delete'; del.innerHTML = '✕';
+    del.onclick = e => { e.stopPropagation(); wrapper.remove(); };
+    const rsz = document.createElement('div');
+    rsz.className = 'sticker-resize';
+    wrapper.append(img, del, rsz);
+    document.body.appendChild(wrapper);
+
+    // 드래그
+    function startDrag(e) {
+      if (!isAdmin || e.target === del || e.target === rsz) return;
+      e.preventDefault();
+      const touch = e.touches?.[0] || e;
+      let sx = touch.clientX - wrapper.getBoundingClientRect().left;
+      let sy = touch.clientY - wrapper.getBoundingClientRect().top;
+      function onMove(ev) {
+        const t = ev.touches?.[0] || ev;
+        wrapper.style.left = (t.pageX - sx) + 'px';
+        wrapper.style.top  = (t.pageY - sy) + 'px';
+      }
+      function stopDrag() {
+        wrapper.style.left = (wrapper.getBoundingClientRect().left / window.innerWidth * 100) + 'vw';
+        document.removeEventListener('mousemove', onMove); document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('mouseup', stopDrag); document.removeEventListener('touchend', stopDrag);
+      }
+      document.addEventListener('mousemove', onMove); document.addEventListener('touchmove', onMove, {passive:false});
+      document.addEventListener('mouseup', stopDrag); document.addEventListener('touchend', stopDrag);
+    }
+    wrapper.addEventListener('mousedown', startDrag);
+    wrapper.addEventListener('touchstart', startDrag, {passive:false});
+
+    // 리사이즈
+    rsz.addEventListener('mousedown', startResize);
+    rsz.addEventListener('touchstart', startResize, {passive:false});
+    function startResize(e) {
+      if (!isAdmin) return; e.preventDefault(); e.stopPropagation();
+      const touch = e.touches?.[0] || e;
+      const startX = touch.pageX, startW = wrapper.getBoundingClientRect().width;
+      function onMove(ev) { const t = ev.touches?.[0] || ev; const nw = startW + (t.pageX - startX); if (nw > 30) wrapper.style.width = nw + 'px'; }
+      function stopResize() {
+        wrapper.style.width = (wrapper.getBoundingClientRect().width / window.innerWidth * 100) + 'vw';
+        document.removeEventListener('mousemove', onMove); document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('mouseup', stopResize); document.removeEventListener('touchend', stopResize);
+      }
+      document.addEventListener('mousemove', onMove); document.addEventListener('touchmove', onMove, {passive:false});
+      document.addEventListener('mouseup', stopResize); document.addEventListener('touchend', stopResize);
+    }
+  }
+
+  // ── 동적 게시물 추가 ──
+  function toDriveEmbed(url) {
+    const m = url.match(/\/file\/d\/([^\/]+)/);
+    return m ? `https://drive.google.com/file/d/${m[1]}/preview` : url;
+  }
+  function addGridItem() {
+    const tab     = document.getElementById('addTab').value;
+    const type    = document.getElementById('addType').value;
+    const url     = document.getElementById('addUrl').value.trim();
+    const caption = document.getElementById('addCaption').value.trim();
+    if (!url) { alert('URL을 입력하세요.'); return; }
+    const grid = document.getElementById(tab);
+    renderDynItem(grid, type, url, caption, true);
+    document.getElementById('addUrl').value = '';
+    document.getElementById('addCaption').value = '';
+  }
+  function renderDynItem(grid, type, url, caption, prepend) {
+    let wrapper;
+    if (type === 'image') {
+      wrapper = document.createElement('div');
+      wrapper.className = 'media-item';
+      wrapper.dataset.dynType = 'image';
+      wrapper.dataset.dynUrl  = url;
+      wrapper.dataset.dynCap  = caption;
+      const img = document.createElement('img');
+      img.src = url; img.alt = caption || '이미지';
+      const cap = document.createElement('div');
+      cap.className = 'media-caption'; cap.textContent = caption;
+      wrapper.append(img, cap);
+    } else {
+      wrapper = document.createElement('div');
+      wrapper.className = 'media-item pdf-item';
+      wrapper.dataset.dynType = 'pdf';
+      wrapper.dataset.dynUrl  = url;
+      wrapper.dataset.dynCap  = caption;
+      const hdr = document.createElement('div');
+      hdr.className = 'pdf-header'; hdr.textContent = '📄 ' + (caption || 'PDF');
+      const body = document.createElement('div');
+      body.className = 'pdf-body';
+      const iframe = document.createElement('iframe');
+      iframe.src = toDriveEmbed(url); iframe.allow = 'autoplay';
+      body.appendChild(iframe);
+      wrapper.append(hdr, body);
+    }
+    // 삭제 버튼
+    const del = document.createElement('div');
+    del.className = 'dyn-delete'; del.innerHTML = '✕';
+    del.onclick = e => { e.stopPropagation(); if (confirm('삭제하시겠습니까?')) wrapper.remove(); };
+    wrapper.appendChild(del);
+    if (prepend) grid.prepend(wrapper); else grid.appendChild(wrapper);
+  }
+
+  // =====================================================
+  // GitHub 저장 — HTML 파일 전체를 커밋
+  // =====================================================
+  async function saveToGitHub() {
+    if (!isAdmin) return;
+    if (GITHUB_TOKEN === 'YOUR_GITHUB_TOKEN') {
+      alert('⚠️ GITHUB_TOKEN과 GITHUB_REPO를 먼저 설정해주세요!\n\nHTML 파일 상단의 주석 부분을 확인하세요.');
+      return;
+    }
+
+    const statusEl = document.getElementById('saveStatus');
+    statusEl.className = 'save-status loading';
+    statusEl.textContent = '⏳ 저장 중…';
+
+    try {
+      // 1. 현재 HTML을 직렬화하여 저장용 스냅샷 생성
+      const html = buildSaveableHTML();
+
+      // 2. 현재 파일의 SHA 가져오기 (업데이트에 필요)
+      const apiBase = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+      const headers = {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      };
+
+      let sha = null;
+      try {
+        const getRes = await fetch(`${apiBase}?ref=${GITHUB_BRANCH}`, { headers });
+        if (getRes.ok) { const data = await getRes.json(); sha = data.sha; }
+      } catch(e) { /* 새 파일이면 sha 없어도 됨 */ }
+
+      // 3. 커밋
+      const body = {
+        message: `[APS Admin] 콘텐츠 업데이트 ${new Date().toLocaleString('ko-KR')}`,
+        content: btoa(unescape(encodeURIComponent(html))),
+        branch: GITHUB_BRANCH
+      };
+      if (sha) body.sha = sha;
+
+      const putRes = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body) });
+
+      if (putRes.ok) {
+        statusEl.className = 'save-status ok';
+        statusEl.textContent = '✅ 저장 완료! 잠시 후 반영됩니다.';
+      } else {
+        const err = await putRes.json();
+        throw new Error(err.message || putRes.status);
+      }
+    } catch (e) {
+      statusEl.className = 'save-status err';
+      statusEl.textContent = '❌ 오류: ' + e.message;
+      console.error(e);
+    }
+  }
+
+  function buildSaveableHTML() {
+    const clone = document.documentElement.cloneNode(true);
+
+    // 관리자 패널 숨기기
+    clone.querySelector('#adminPanel').style.display = 'none';
+    clone.querySelector('#adminBtn').style.display = 'none';
+
+    // admin-mode 클래스 제거
+    clone.querySelector('body').classList.remove('admin-mode');
+
+    // 동적으로 추가된 미디어 그리드 동기화
+    replaceGridSection(clone, 'mediaGrid');
+    replaceGridSection(clone, 'worksGrid');
+
+    // 저장 상태 텍스트 초기화
+    const statusEl = clone.querySelector('#saveStatus');
+    if (statusEl) statusEl.textContent = '';
+
+    return '<!DOCTYPE html>\n' + clone.outerHTML;
+  }
+
+  function replaceGridSection(clone, gridId) {
+    // clone은 Element이므로 querySelector 사용 (getElementById 없음)
+    const cloneGrid = clone.querySelector('#' + gridId);
+    if (!cloneGrid) return;
+
+    const realGrid = document.getElementById(gridId);
+    if (!realGrid) return;
+
+    // 현재 DOM 내용을 clone에 복사
+    cloneGrid.innerHTML = realGrid.innerHTML;
+
+    // 삭제 버튼은 저장 HTML에서 제거
+    cloneGrid.querySelectorAll('.dyn-delete').forEach(el => el.remove());
+  }
+
+  // =====================================================
+  // 초기화
+  // =====================================================
+  window.addEventListener('DOMContentLoaded', () => {
+    initHeaderSlider();
+    initPinnedSlider();
+  });
+  </script>
+</body>
+</html>
